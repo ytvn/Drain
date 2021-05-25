@@ -21,7 +21,8 @@ class BaseAlgos(object):
     def __init__(self, dataset: Dataset, dataset_name):
         super().__init__()
         self.dataset = dataset
-        self.pwd = "./../../"
+        self.pwd = "./"
+        # self.pwd = "./../../"
         self.dataset_name = dataset_name
         self.prepair_output_path()
         self.init()

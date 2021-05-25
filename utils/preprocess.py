@@ -85,7 +85,7 @@ class AnomalyDetection(PreProcess):
         df_class_0, df_class_1 = df[df['Label'] == 0],  df[df['Label'] == 1]
 
         df.Label.value_counts().plot(kind='bar', title='Count (label) before resampling')
-        plt.show()
+        # plt.show()
 
         count_class_0, count_class_1 = df.Label.value_counts()
         count = math.floor((count_class_0 - count_class_1) / 2) + count_class_1
@@ -95,7 +95,7 @@ class AnomalyDetection(PreProcess):
         df_resampled = pd.concat([df_class_1_over, df_class_0], axis=0)
         df_resampled = df_resampled.sort_values(by=['Date'], ascending=True)
         df_resampled.Label.value_counts().plot(kind='bar', title='Count (label) after resampling')
-        plt.show()
+        # plt.show()
         return df_resampled
 
     def labeling(self, df, threshold, start='2000-10-30 8:45:00'):
