@@ -18,13 +18,13 @@ if __name__ == '__main__':
 
     names = []
     full_names = []
-    regex = r"Anomalies\\((.*?)\.csv)"
+    regex = r"Anomalies[\\|\/]((.*?)\.csv)"
     for name in glob.glob('./data/Anomalies/*'):
+        print(name)
         result = re.search(regex, name)
         if result:
             names.append(result.group(2))
             full_names.append(result.group(1))
-
     for i in range(len(full_names)):
         path = ""
         for step in range(2, 77):
