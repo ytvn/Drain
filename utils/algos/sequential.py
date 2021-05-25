@@ -67,6 +67,7 @@ if __name__ == '__main__':
     for i in range(len(full_names)):
         path = ""
         for step in range(3, 5):
+
             # Load and preprocess data
             preprocess_data = AnomalyDetection(data_path="./../../data/Anomalies/" + full_names[i], seq_size=step, threshold_label=50)
             preprocess_data.preprocess()

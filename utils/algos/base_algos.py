@@ -157,12 +157,15 @@ class SequentialMl(BaseAlgos):
         plt.close()
 
     def evaluation_metric(self, X, y):
+        start_time = time.time()
         x_predictions = self.sequential.predict(X)
         mse = np.mean(np.power((X) - (x_predictions), 2), axis=1).reshape(-1)
 
         error_df = pd.DataFrame({'Reconstruction_error': mse,
                                  'True_class': y.tolist()})
-        return error_df
+        end_time = time.time()
+
+        return error_df, (end_time - start_time)
 
     def predict_y(self, error_df, threshold_fixed):
         pred_y = [1 if e > threshold_fixed else 0 for e in error_df.Reconstruction_error.values]
@@ -249,6 +252,7 @@ class SequentialMl(BaseAlgos):
         df.to_csv(path)
 
     def best_accuracy(self, error_df, threshold_rt):
+        start_time = time.time()
         accuracies = np.array([])
         save_threshold, save_accuracy = [], []
         for thres in threshold_rt:
@@ -262,7 +266,8 @@ class SequentialMl(BaseAlgos):
 
         max_accuracy = np.max(accuracies)
         thres = threshold_rt[np.where(accuracies == max_accuracy)[0][0]]
-        return max_accuracy, thres
+        end_time = time.time()
+        return max_accuracy, thres, (end_time - start_time)
 
 
 
