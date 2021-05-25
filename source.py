@@ -20,14 +20,16 @@ if __name__ == '__main__':
     full_names = []
     regex = r"Anomalies[\\|\/]((.*?)\.csv)"
     for name in glob.glob('./data/Anomalies/*'):
-        print(name)
         result = re.search(regex, name)
         if result:
             names.append(result.group(2))
             full_names.append(result.group(1))
+    print(full_names)
     for i in range(len(full_names)):
         path = ""
-        for step in range(2, 77):
+        df = pd.DataFrame()
+        for step in range(0, 77):
+
             # Load and preprocess data
             preprocess_data = AnomalyDetection(data_path="./data/Anomalies/" + full_names[i], seq_size=step,
                                                threshold_label=50)
@@ -41,13 +43,19 @@ if __name__ == '__main__':
                                     lr=0.1)
             preprocess_data.plot_data(data=preprocess_data.raw_data, title=names[i],
                                       path=model.pwd + model.image_path(names[i]))
-            model.train()
+            _, _, time_exe = model.train()
+            print("Model train in %s seconds" % (str(time_exe)))
+
             # model.load_model()
             history = model.load_history()
             model.plot_hist(history)
-            print("Model predict: \n", model.predict())
+            model.predict()
 
-            error_df = model.evaluation_metric(dataset.X_test, dataset.y_test)
+            error_df: pd.DataFrame = model.evaluation_metric(dataset.X_test, dataset.y_test)
+            error_df.dropna(inplace=True)
+            print(error_df.shape)
+            if error_df.shape[1] < 10:
+                continue
 
             model.ROC(error_df=error_df)
             threshold_rt = model.precision_recal_curve(error_df)
@@ -65,6 +73,7 @@ if __name__ == '__main__':
             else:
                 df.to_csv(path)
 
-        df = pd.read_csv(path)
-        df = df.sort_values(by=['Accuracy'], ascending=False)
-        df.to_csv(path)
+        if path != "":
+            df = pd.read_csv(path)
+            df = df.sort_values(by=['Accuracy'], ascending=False)
+            df.to_csv()

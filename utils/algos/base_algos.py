@@ -103,7 +103,7 @@ class SequentialMl(BaseAlgos):
     def load_model(self):
         self.sequential = load_model(self.pwd + self.model_path())
         # self.sequential.load_weights(self.pwd + self.model_path())
-        # self.compile_sequential()
+        self.compile_sequential()
 
     def save_history(self, history):
         np.save(self.pwd + self.history_path(), history)

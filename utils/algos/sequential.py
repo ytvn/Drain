@@ -77,8 +77,9 @@ if __name__ == '__main__':
             #Create an instant of model which include method like: train(), predict()..
             model = LSTMAutoencoder(dataset=dataset, dataset_name=names[i]+"/step" + str(step), epochs=20, batch=64, lr=0.1 )
             preprocess_data.plot_data(data=preprocess_data.raw_data, title=names[i], path=model.pwd + model.image_path(names[i]))
-            # model.train()
-            model.load_model()
+            model.train()
+
+            # model.load_model()
             history = model.load_history()
             model.plot_hist(history)
             print("Model predict: \n", model.predict())
