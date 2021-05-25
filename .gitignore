@@ -1,5 +1,3 @@
 venv/
 .idea/
-utils/__pycache__/
-utils/algos/__pycache__/
-utils/__pycache__/
+**/__pycache__/
